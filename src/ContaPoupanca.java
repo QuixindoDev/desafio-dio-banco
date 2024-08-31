@@ -5,4 +5,8 @@ public class ContaPoupanca extends Conta{
         super.imprimirInfo();
     }
 
+    @Override
+    public void fecharConta(int numero) {
+        System.out.println("Conta fechada com sucesso");
+    }
 }
