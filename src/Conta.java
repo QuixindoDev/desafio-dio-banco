@@ -19,7 +19,10 @@ public abstract class Conta implements IConta{
     @Override
     public void depositar(double valor) {
         try{
-            this.saldo += valor;
+            if (this.numero > 0 && this.agencia > 0)
+                this.saldo += valor;
+            else
+                System.out.println("A conta que pretende depositar nao existe");
         } catch (Exception e) {
             throw new RuntimeException("Por favor, digite valores corretos.");
         }
@@ -29,7 +32,10 @@ public abstract class Conta implements IConta{
     @Override
     public void sacar(double valor) {
         try {
-            this.saldo -= valor;
+            if (this.numero > 0 && this.agencia > 0)
+                this.saldo -= valor;
+            else
+                System.out.println("A conta que pretende sacar nao existe");
         } catch (Exception e) {
             throw new RuntimeException("Por favor, digite valores corretos.");
         }
@@ -39,8 +45,11 @@ public abstract class Conta implements IConta{
     @Override
     public void transferir(double valor, Conta destino) {
         try {
-            this.sacar(valor);
-            destino.depositar(valor);
+            if (this.numero > 0 && this.agencia > 0) {
+                this.sacar(valor);
+                destino.depositar(valor);
+            } else
+                System.out.println("Operacao invalida");
         } catch (Exception e) {
             throw new RuntimeException("Por favor, digite valores corretos.");
         }
@@ -53,13 +62,15 @@ public abstract class Conta implements IConta{
         System.out.println(String.format("Saldo: %.2f", this.getSaldo()));
     }
 
-    public void fechar(int numero){
-        if (this.saldo > 0)
+    public boolean fechar(int numero){
+        if (this.saldo > 0) {
             System.out.println("Precisa sacar todo dinheiro.");
-        else{
-            this.agencia = 0;
-            this.numero = 0;
+            return false;
         }
+
+        this.agencia = 0;
+        this.numero = 0;
+        return true;
 
     }
 }
